@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--Labels-->
+    <system:String x:Key="MainTitle">ATM</system:String>
+    <system:String x:Key="LastNameFilter">test</system:String>
+    <system:String x:Key="Balance">Balance:</system:String>
+    <system:String x:Key="Update">Update</system:String>
+    <system:String x:Key="DepositCash">Deposit cash:</system:String>
+    <system:String x:Key="CashIn">Cash In</system:String>
+    <system:String x:Key="CountValidation">This field can't be negative</system:String>
+    <system:String x:Key="CashWithdrawal">Cash withdrawal:</system:String>
+    <system:String x:Key="CashOut">Cash Out</system:String>
+</ResourceDictionary>

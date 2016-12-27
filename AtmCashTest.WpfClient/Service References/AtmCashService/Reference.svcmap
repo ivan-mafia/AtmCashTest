@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="ab929c6c-9cf9-4d78-8cb9-3c0d47f66388" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:55846/AtmCashService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AtmCashService.disco" MetadataType="Disco" ID="c40a6f0b-9ed5-4334-a84f-01e9f7a5f73a" SourceId="1" SourceUrl="http://localhost:55846/AtmCashService.svc?disco" />
+    <MetadataFile FileName="AtmCashService.xsd" MetadataType="Schema" ID="a04e40ae-202b-48f2-ab47-231cdcc6f95a" SourceId="1" SourceUrl="http://localhost:55846/AtmCashService.svc?xsd=xsd1" />
+    <MetadataFile FileName="AtmCashService1.xsd" MetadataType="Schema" ID="44a35fea-7835-44f2-8867-f3d3503917f6" SourceId="1" SourceUrl="http://localhost:55846/AtmCashService.svc?xsd=xsd0" />
+    <MetadataFile FileName="AtmCashService.wsdl" MetadataType="Wsdl" ID="21358a61-1d5d-49c1-8538-c5ffa2165bfa" SourceId="1" SourceUrl="http://localhost:55846/AtmCashService.svc?wsdl" />
+    <MetadataFile FileName="AtmCashService2.xsd" MetadataType="Schema" ID="f950650b-f0ef-4a98-a559-7806c605a670" SourceId="1" SourceUrl="http://localhost:55846/AtmCashService.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

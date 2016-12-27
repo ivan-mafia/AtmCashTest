@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="AtmCashTest.WcfService.AtmCashService" CodeBehind="AtmCashService.svc.cs" %>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/AtmCashTest.WcfService.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/AtmCashTest.WcfService.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfBanknoteContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BanknoteContract" nillable="true" type="tns:BanknoteContract" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBanknoteContract" nillable="true" type="tns:ArrayOfBanknoteContract" />
+  <xs:complexType name="BanknoteContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Count" type="xs:int" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Nominal" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BanknoteContract" nillable="true" type="tns:BanknoteContract" />
+  <xs:complexType name="ImpossibleCashOutFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Result" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ImpossibleCashOutFault" nillable="true" type="tns:ImpossibleCashOutFault" />
+</xs:schema>
