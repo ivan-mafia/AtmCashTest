@@ -14,7 +14,6 @@ namespace AtmCashTest.WpfClient.ViewModels
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.ServiceModel;
-    using System.Threading.Tasks;
     using System.Windows;
 
     using AtmCashTest.WpfClient.AtmCashService;
@@ -100,6 +99,12 @@ namespace AtmCashTest.WpfClient.ViewModels
         }
 
         /// <summary>
+        /// Gets the title of the view model.
+        /// </summary>
+        /// <value>The title.</value>
+        public override string Title => this.m_title;
+
+        /// <summary>
         /// Gets or sets a value indicating whether is commands enabled.
         /// </summary>
         public bool IsCommandsEnabled
@@ -141,6 +146,16 @@ namespace AtmCashTest.WpfClient.ViewModels
         public Command GetBalance { get; private set; }
 
         /// <summary>
+        /// Gets the CashIn command.
+        /// </summary>
+        public Command CashIn { get; private set; }
+
+        /// <summary>
+        /// Gets the CashOut command.
+        /// </summary>
+        public Command CashOut { get; private set; }
+
+        /// <summary>
         /// Method to invoke when the GetBalance command is executed.
         /// </summary>
         private async void OnGetBalanceExecute()
@@ -165,11 +180,6 @@ namespace AtmCashTest.WpfClient.ViewModels
                 this.IsCommandsEnabled = true;
             }
         }
-
-        /// <summary>
-        /// Gets the CashIn command.
-        /// </summary>
-        public Command CashIn { get; private set; }
 
         /// <summary>
         /// Method to invoke when the CashIn command is executed.
@@ -222,11 +232,6 @@ namespace AtmCashTest.WpfClient.ViewModels
         }
 
         /// <summary>
-        /// Gets the CashOut command.
-        /// </summary>
-        public Command CashOut { get; private set; }
-
-        /// <summary>
         /// Method to invoke when the CashOut command is executed.
         /// </summary>
         private async void OnCashOutExecute()
@@ -243,7 +248,11 @@ namespace AtmCashTest.WpfClient.ViewModels
                     banknotes.AddRange(cashOutBanknotes);
                     this.BalanceSum = await proxy.GetBalanceAsync();
                 }
-                string message = banknotes.Where(banknote => banknote.Count > 0).Aggregate("Cashed out: ", (current, banknote) => current + string.Format("{1} of \"{0}\" banknotes, ", banknote.Nominal, banknote.Count));
+                string message = banknotes.Where(banknote => banknote.Count > 0)
+                    .Aggregate(
+                        "Cashed out: ",
+                        (current, banknote) =>
+                        current + string.Format("{1} of \"{0}\" banknotes, ", banknote.Nominal, banknote.Count));
                 await this.m_messageService.ShowAsync(message.Substring(0, message.Length - 2));
                 logger.Log(LogLevel.Info, "Cash Out completed.");
             }
@@ -257,23 +266,6 @@ namespace AtmCashTest.WpfClient.ViewModels
                 IsCommandsEnabled = true;
                 this.m_pleaseWaitService.Hide();
             }
-
-        }
-
-        /// <summary>
-        /// Gets the title of the view model.
-        /// </summary>
-        /// <value>The title.</value>
-        public override string Title => this.m_title;
-
-        protected override async Task InitializeAsync()
-        {
-            await base.InitializeAsync();
-        }
-
-        protected override async Task CloseAsync()
-        {
-            await base.CloseAsync();
         }
     }
 }

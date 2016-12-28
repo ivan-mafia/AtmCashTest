@@ -87,7 +87,7 @@ namespace AtmCashTest.Core
                 }
 
                 atmB.Find(x => x.Nominal == currentMax.Nominal).Count -= neededCount;
-                cashOut.Add(new Banknote { Id = currentMax.Id, Nominal = currentMax.Nominal, Count = neededCount});
+                cashOut.Add(new Banknote { Id = currentMax.Id, Nominal = currentMax.Nominal, Count = neededCount });
 
                 amount = change;
             }

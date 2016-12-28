@@ -22,6 +22,7 @@ namespace AtmCashTest.Data.DbContext
         public AtmDbContext()
             : base("atmdb")
         {
+            // ReSharper disable once RedundantTypeArgumentsOfMethod
             Database.SetInitializer<AtmDbContext>(new AtmDbInitializer());
         }
 
