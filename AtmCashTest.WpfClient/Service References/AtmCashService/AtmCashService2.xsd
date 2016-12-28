@@ -14,12 +14,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BanknoteContract" nillable="true" type="tns:BanknoteContract" />
-  <xs:complexType name="ImpossibleCashOutFault">
+  <xs:complexType name="AtmServiceFault">
     <xs:sequence>
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Result" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ImpossibleCashOutFault" nillable="true" type="tns:ImpossibleCashOutFault" />
+  <xs:element name="AtmServiceFault" nillable="true" type="tns:AtmServiceFault" />
 </xs:schema>

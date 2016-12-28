@@ -3,8 +3,8 @@
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:55846/AtmCashService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
-      <xsd:import schemaLocation="http://localhost:55846/AtmCashService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:55846/AtmCashService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/AtmCashTest.WcfService.Models" />
+      <xsd:import schemaLocation="http://localhost:55846/AtmCashService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IAtmCashService_PutCash_InputMessage">
@@ -13,34 +13,42 @@
   <wsdl:message name="IAtmCashService_PutCash_OutputMessage">
     <wsdl:part name="parameters" element="tns:PutCashResponse" />
   </wsdl:message>
+  <wsdl:message name="IAtmCashService_PutCash_AtmServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/AtmCashTest.WcfService.Models" name="detail" element="q1:AtmServiceFault" />
+  </wsdl:message>
   <wsdl:message name="IAtmCashService_GetCash_InputMessage">
     <wsdl:part name="parameters" element="tns:GetCash" />
   </wsdl:message>
   <wsdl:message name="IAtmCashService_GetCash_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCashResponse" />
   </wsdl:message>
-  <wsdl:message name="IAtmCashService_GetCash_ImpossibleCashOutFaultFault_FaultMessage">
-    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/AtmCashTest.WcfService.Models" name="detail" element="q1:ImpossibleCashOutFault" />
+  <wsdl:message name="IAtmCashService_GetCash_AtmServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/AtmCashTest.WcfService.Models" name="detail" element="q2:AtmServiceFault" />
   </wsdl:message>
-  <wsdl:message name="IAtmCashService_GetAccountSum_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetAccountSum" />
+  <wsdl:message name="IAtmCashService_GetBalance_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBalance" />
   </wsdl:message>
-  <wsdl:message name="IAtmCashService_GetAccountSum_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetAccountSumResponse" />
+  <wsdl:message name="IAtmCashService_GetBalance_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBalanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAtmCashService_GetBalance_AtmServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/AtmCashTest.WcfService.Models" name="detail" element="q3:AtmServiceFault" />
   </wsdl:message>
   <wsdl:portType name="IAtmCashService">
     <wsdl:operation name="PutCash">
       <wsdl:input wsaw:Action="http://tempuri.org/IAtmCashService/PutCash" message="tns:IAtmCashService_PutCash_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAtmCashService/PutCashResponse" message="tns:IAtmCashService_PutCash_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAtmCashService/PutCashAtmServiceFaultFault" name="AtmServiceFaultFault" message="tns:IAtmCashService_PutCash_AtmServiceFaultFault_FaultMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetCash">
       <wsdl:input wsaw:Action="http://tempuri.org/IAtmCashService/GetCash" message="tns:IAtmCashService_GetCash_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IAtmCashService/GetCashResponse" message="tns:IAtmCashService_GetCash_OutputMessage" />
-      <wsdl:fault wsaw:Action="http://tempuri.org/IAtmCashService/GetCashImpossibleCashOutFaultFault" name="ImpossibleCashOutFaultFault" message="tns:IAtmCashService_GetCash_ImpossibleCashOutFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAtmCashService/GetCashAtmServiceFaultFault" name="AtmServiceFaultFault" message="tns:IAtmCashService_GetCash_AtmServiceFaultFault_FaultMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetAccountSum">
-      <wsdl:input wsaw:Action="http://tempuri.org/IAtmCashService/GetAccountSum" message="tns:IAtmCashService_GetAccountSum_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IAtmCashService/GetAccountSumResponse" message="tns:IAtmCashService_GetAccountSum_OutputMessage" />
+    <wsdl:operation name="GetBalance">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAtmCashService/GetBalance" message="tns:IAtmCashService_GetBalance_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAtmCashService/GetBalanceResponse" message="tns:IAtmCashService_GetBalance_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAtmCashService/GetBalanceAtmServiceFaultFault" name="AtmServiceFaultFault" message="tns:IAtmCashService_GetBalance_AtmServiceFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IAtmCashService" type="tns:IAtmCashService">
@@ -53,6 +61,9 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="AtmServiceFaultFault">
+        <soap:fault use="literal" name="AtmServiceFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="GetCash">
       <soap:operation soapAction="http://tempuri.org/IAtmCashService/GetCash" style="document" />
@@ -62,18 +73,21 @@
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
-      <wsdl:fault name="ImpossibleCashOutFaultFault">
-        <soap:fault use="literal" name="ImpossibleCashOutFaultFault" namespace="" />
+      <wsdl:fault name="AtmServiceFaultFault">
+        <soap:fault use="literal" name="AtmServiceFaultFault" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="GetAccountSum">
-      <soap:operation soapAction="http://tempuri.org/IAtmCashService/GetAccountSum" style="document" />
+    <wsdl:operation name="GetBalance">
+      <soap:operation soapAction="http://tempuri.org/IAtmCashService/GetBalance" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output>
         <soap:body use="literal" />
       </wsdl:output>
+      <wsdl:fault name="AtmServiceFaultFault">
+        <soap:fault use="literal" name="AtmServiceFaultFault" namespace="" />
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="AtmCashService">

@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmCashTest.Data", "AtmCash
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmCashTest.Core", "AtmCashTest.Core\AtmCashTest.Core.csproj", "{D2F51B72-B1EA-4CC2-89EE-031249F01E9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmCashTest.WebApi", "AtmCashTest.WebApi\AtmCashTest.WebApi.csproj", "{210F480D-5CB0-480B-B0E6-295B6F517237}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{D2F51B72-B1EA-4CC2-89EE-031249F01E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2F51B72-B1EA-4CC2-89EE-031249F01E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2F51B72-B1EA-4CC2-89EE-031249F01E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210F480D-5CB0-480B-B0E6-295B6F517237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210F480D-5CB0-480B-B0E6-295B6F517237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210F480D-5CB0-480B-B0E6-295B6F517237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210F480D-5CB0-480B-B0E6-295B6F517237}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

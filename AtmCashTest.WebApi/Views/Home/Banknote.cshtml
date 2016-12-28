@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "ATM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts {
+
+    <link href="~/Content/CustomStyle.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="~/Scripts/banknote.js"></script>
+}
+
+<div ng-app="banknoteModule" id="body">
+    <div ng-controller="banknoteCtrl">
+        <h2>ATM</h2>
+        <div>
+            <h4>Balance:</h4>
+            <div>
+                <h4><label ng-bind="balance"></label><label ng-show="loading">...</label></h4>
+                <button type="button" ng-click="getBalance()" ng-disabled="loading">Refresh</button>
+            </div>
+            <br/>
+            <div style="border-top: solid 2px #282828; width: 430px; height: 10px"> </div>
+            <h4>Deposit cash:</h4>
+            <table ng-cloak>
+                <thead>
+                <tr>
+                    <th style="display: none;">Id</th>
+                    <th>Nominal</th>
+                    <th>Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="banknote in banknotes">
+                    <td hidden="hidden">{{banknote.Id}}</td>
+                    <td>{{banknote.Nominal}}</td>
+                    <td><input type="text" ng-model="banknote.Count"/></td>
+                </tr>
+                </tbody>
+            </table>
+            <br/>
+            <div>
+                <button ng-click="putCash()" ng-disabled="loading">Cash In</button>
+            </div>
+            <br />
+            <div style="border-top: solid 2px #282828; width: 430px; height: 10px"> </div>
+            <h4>Cash withdrawal:</h4>
+            <div>
+                <input type="number" min="0" step="100" ng-model="inputsum"/>
+            </div>
+            <br/>
+            <div>
+                <button ng-click="getCash()" ng-disabled="loading">Cash Out</button>
+            </div>
+        </div>
+    </div>
+</div>

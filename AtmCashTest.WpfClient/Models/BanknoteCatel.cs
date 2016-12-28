@@ -1,61 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BanknoteCatel.cs" company="Ivan">
+//   Starikov Ivan, 2016
+// </copyright>
+// <summary>
+//   Defines the BanknoteCatel type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace AtmCashTest.WpfClient.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using AtmCashTest.Core;
 
     using Catel.Data;
 
+    /// <summary>
+    /// The banknote for <c>catel</c> and <c>mvvm</c>.
+    /// </summary>
     public class BanknoteCatel : ModelBase, IBanknote
     {
         /// <summary>
-            /// Gets or sets the property value.
-            /// </summary>
-        public int Id
-        {
-            get { return GetValue<int>(IdProperty); }
-            set { SetValue(IdProperty, value); }
-        }
-
-        /// <summary>
         /// Register the Id property so it is known in the class.
         /// </summary>
-        public static readonly PropertyData IdProperty = RegisterProperty("Id", typeof(int), null);
+        public static readonly PropertyData IdProperty = RegisterProperty("Id", typeof(int));
+
+        /// <summary>
+        /// Register the Nominal property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData NominalProperty = RegisterProperty("Nominal", typeof(int));
+
+        /// <summary>
+        /// Register the Count property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData CountProperty = RegisterProperty("Count", typeof(int));
+
+        /// <summary>
+        /// Gets or sets the property value.
+        /// </summary>
+        public int Id
+        {
+            get { return this.GetValue<int>(IdProperty); }
+            set { this.SetValue(IdProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
         public int Nominal
         {
-            get { return GetValue<int>(NominalProperty); }
-            set { SetValue(NominalProperty, value); }
+            get { return this.GetValue<int>(NominalProperty); }
+            set { this.SetValue(NominalProperty, value); }
         }
-
-        /// <summary>
-        /// Register the Nominal property so it is known in the class.
-        /// </summary>
-        public static readonly PropertyData NominalProperty = RegisterProperty("Nominal", typeof(int), null);
 
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
+        // ReSharper disable once LocalizableElement
         [Range(0, int.MaxValue, ErrorMessage = "Nominal must be positive")]
         public int Count
         {
-            get { return GetValue<int>(CountProperty); }
-            set { SetValue(CountProperty, value); }
+            get { return this.GetValue<int>(CountProperty); }
+            set { this.SetValue(CountProperty, value); }
         }
-
-        /// <summary>
-        /// Register the Count property so it is known in the class.
-        /// </summary>
-        public static readonly PropertyData CountProperty = RegisterProperty("Count", typeof(int), null);
 
         #region Protected Methods
         /// <summary>

@@ -29,15 +29,15 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetAccountSum">
+  <xs:element name="GetBalance">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetAccountSumResponse">
+  <xs:element name="GetBalanceResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetAccountSumResult" type="xs:int" />
+        <xs:element minOccurs="0" name="GetBalanceResult" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

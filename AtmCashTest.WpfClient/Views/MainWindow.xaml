@@ -23,7 +23,7 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="{StaticResource Balance}"></Label>
         <Label Grid.Row="0" Grid.Column="1" Content="{Binding BalanceSum}" FontWeight="Bold" Margin="0,0,20,0"></Label>
-        <Button Grid.Row="0" Grid.Column="2" Command="{Binding AccountInfo}" IsEnabled="{Binding IsCommandsEnabled}" Content="{StaticResource Update}" Margin="8,0,0,0"></Button>
+        <Button Grid.Row="0" Grid.Column="2" Command="{Binding GetBalance}" IsEnabled="{Binding IsCommandsEnabled}" Content="{StaticResource Update}" Margin="8,0,0,0"></Button>
         <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"/>
          
         <Label Grid.Row="2" Grid.Column="0" Content="{StaticResource DepositCash}" VerticalAlignment="Center"></Label>

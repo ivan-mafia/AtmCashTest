@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AtmCashService.svc.cs" company="Ivan">
+//   Starikov Ivan, 2016
+// </copyright>
+// <summary>
+//   Defines the AtmCashService type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace AtmCashTest.WcfService
 {
-    using System.ServiceModel.Description;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Xml.Serialization;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Validation;
+    using System.Data.SqlClient;
+    using System.Linq;
+    using System.ServiceModel;
 
     using AtmCashTest.Core;
     using AtmCashTest.Data.DbContext;
@@ -19,127 +23,156 @@ namespace AtmCashTest.WcfService
 
     using AutoMapper;
 
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "AtmCashService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select AtmCashService.svc or AtmCashService.svc.cs at the Solution Explorer and start debugging.
+    using NLog;
+
+    /// <summary>
+    /// The <c>atm</c> cash service.
+    /// </summary>
     public class AtmCashService : IAtmCashService
     {
-        //public static void Configure(ServiceConfiguration config)
-        //{
-        //    ServiceEndpoint se = new ServiceEndpoint(new ContractDescription("IService1"), new BasicHttpBinding(), new EndpointAddress("basic"));
-        //    se.Behaviors.Add(new MyEndpointBehavior());
-        //    config.AddServiceEndpoint(se);
+        /// <summary>
+        /// The repository service.
+        /// </summary>
+        private readonly IRepositoryService m_repositoryService;
 
-        //    config.Description.Behaviors.Add(new ServiceMetadataBehavior { HttpGetEnabled = true });
-        //    config.Description.Behaviors.Add(new ServiceDebugBehavior { IncludeExceptionDetailInFaults = true });
-        //    new AutoMapperConfig();
-        //}
+        /// <summary>
+        /// The <c>atm</c> operations.
+        /// </summary>
+        private readonly IAtmOperations m_atmOperations;
 
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        private readonly ILogger m_logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AtmCashService"/> class.
+        /// </summary>
+        /// <param name="repositoryService">
+        /// The repository service.
+        /// </param>
+        /// <param name="atmOperations">
+        /// The <c>atm</c> operations.
+        /// </param>
+        /// <param name="logger">
+        /// The logger.
+        /// </param>
+        public AtmCashService(IRepositoryService repositoryService, IAtmOperations atmOperations, ILogger logger)
+        {
+            this.m_repositoryService = repositoryService;
+            this.m_atmOperations = atmOperations;
+            this.m_logger = logger;
+        }
+
+        /// <summary>
+        /// The put cash.
+        /// </summary>
+        /// <param name="banknotes">
+        /// The banknotes.
+        /// </param>
+        /// <returns>
+        /// The list of banknotes.
+        /// </returns>
+        /// <exception cref="FaultException{T}">
+        /// Throws fault exception if exception was thrown.
+        /// </exception>
         public IEnumerable<BanknoteContract> PutCash(IEnumerable<BanknoteContract> banknotes)
         {
             try
             {
-                var repositoryService = new RepositoryService();
-
-                return Mapper.Map<IEnumerable<IBanknote>, List<BanknoteContract>>(repositoryService.AddBanknotes(banknotes));
+                this.m_logger.Log(LogLevel.Info, "Put Cash started.");
+                IEnumerable<BanknoteContract> notAcceptedBanknotes = Mapper.Map<IEnumerable<IBanknote>, List<BanknoteContract>>(this.m_repositoryService.AddBanknotes(banknotes));
+                this.m_logger.Log(LogLevel.Info, "Put Cash completed.");
+                return notAcceptedBanknotes;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex) when (ex is InvalidOperationException || ex is DbUpdateConcurrencyException || ex is DbUpdateException || ex is DbEntityValidationException || ex is SqlException)
             {
-                throw new FaultException<ImpossibleCashOutFault>(new ImpossibleCashOutFault
+                this.m_logger.Log(LogLevel.Error, ex, "Put Cash returned error.");
+                throw new FaultException<AtmServiceFault>(new AtmServiceFault
                 {
                     Result = false,
                     Message = ex.Message,
-                    Description = "Fault!!!"
+                    Description = ex.HelpLink
                 });
             }
         }
 
+        /// <summary>
+        /// The get cash.
+        /// </summary>
+        /// <param name="sum">
+        /// The selected sum.
+        /// </param>
+        /// <returns>
+        /// The list of banknotes.
+        /// </returns>
+        /// <exception cref="FaultException{T}">
+        /// Throws fault exception if exception was thrown.
+        /// </exception>
         public IEnumerable<BanknoteContract> GetCash(int sum)
         {
             try
             {
-                var repositoryService = new RepositoryService();
-                var atmBanknotes = repositoryService.GetAllBanknotes();
-                var Atm = new AtmOperations();
-                var cashOutBanknotes = Atm.GetCash(atmBanknotes, sum);
-                var isCashedOut = repositoryService.CashOutBanknotes(cashOutBanknotes);
+                this.m_logger.Log(LogLevel.Info, "Get Cash started. Requested Sum - {0}", sum);
+                var atmBanknotes = this.m_repositoryService.GetAllBanknotes();
+                var cashOutBanknotes = this.m_atmOperations.GetCash(atmBanknotes, sum).Where(b => b.Count > 0).ToList();
+                var isCashedOut = this.m_repositoryService.CashOutBanknotes(cashOutBanknotes);
                 if (isCashedOut)
                 {
+                    this.m_logger.Log(LogLevel.Info, "Get Cash completed.");
                     return Mapper.Map<IEnumerable<IBanknote>, List<BanknoteContract>>(cashOutBanknotes);
                 }
                 else
                 {
-                    throw new FaultException<ImpossibleCashOutFault>(new ImpossibleCashOutFault
+                    this.m_logger.Log(LogLevel.Error, "Get Cash couldn't cashout this sum({0}).", sum);
+                    throw new FaultException<AtmServiceFault>(new AtmServiceFault
                     {
                         Result = false,
-                        Message = "Server error",
-                        Description = "Fault!!!"
-                    }, "Server error", new FaultCode("2"), "action");
+                        Message = "Couldn't cashout this sum",
+                        Description = "Couldn't cashout this sum. Please try another sum."
+                    });
                 }
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex) when (ex is InvalidOperationException || ex is DbUpdateConcurrencyException || ex is DbUpdateException || ex is DbEntityValidationException || ex is SqlException)
             {
-                throw new FaultException<ImpossibleCashOutFault>(new ImpossibleCashOutFault
+                this.m_logger.Log(LogLevel.Error, ex, "Get Cash returned error.");
+                throw new FaultException<AtmServiceFault>(new AtmServiceFault
                 {
                     Result = false,
                     Message = ex.Message,
-                    Description = "Fault!!!"
-                }, ex.Message, new FaultCode("2"), "action");
-            }
-        }
-
-        //public IList<BanknoteContract> GetCashOld(int sum)
-        //{
-        //    var atm = new AtmOperations();
-        //    List<BanknoteContract> atmBanknotes = new List<BanknoteContract>
-        //                                 {
-        //                                     new BanknoteContract {Id = 1, Nominal = 100, Count = 1},
-        //                                     new BanknoteContract {Id = 2, Nominal = 60, Count = 1},
-        //                                     new BanknoteContract {Id = 3, Nominal = 40, Count = 3},
-        //                                     new BanknoteContract {Id = 4, Nominal = 5000, Count = 0}
-        //                                 };
-        //    try
-        //    {
-        //        return atm.GetCash(atmBanknotes, sum).ToList();
-        //    }
-        //    catch (InvalidOperationException ex)
-        //    {
-        //        throw new FaultException<ImpossibleCashOutFault>(new ImpossibleCashOutFault
-        //        {
-        //            Result = false,
-        //            Message = ex.Message,
-        //            Description = "Fault!!!"
-        //        });
-        //    }
-        //}
-
-        public int GetAccountSum()
-        {
-            try
-            {
-                var repo = new RepositoryService();
-                int sum = repo.GetAllBanknotes().Aggregate(0, (i, banknote) => i + banknote.Nominal * banknote.Count);
-                return sum;
-            }
-            catch (Exception ex)
-            {
-                throw new FaultException<ImpossibleCashOutFault>(new ImpossibleCashOutFault
-                {
-                    Result = false,
-                    Message = ex.Message,
-                    Description = "Fault!!!"
+                    Description = ex.HelpLink
                 });
             }
         }
 
-        /*public async Task<string> GetMessagesAsync(string msg)
+        /// <summary>
+        /// The get balance.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        /// <exception cref="FaultException{T}">
+        /// Throws fault exception if exception was thrown.
+        /// </exception>
+        public int GetBalance()
         {
-            var tcs = new TaskCompletionSource<string>();
-            var task = Task.Factory.StartNew(() =>
+            try
             {
-                Thread.Sleep(2000);
-                return "Return from Server : " + msg;
-            });
-            return await task.ConfigureAwait(false);
-        }*/
+                this.m_logger.Log(LogLevel.Info, "Get Balance started.");
+                int sum = this.m_repositoryService.GetAllBanknotes().Aggregate(0, (i, banknote) => i + (banknote.Nominal * banknote.Count));
+                this.m_logger.Log(LogLevel.Info, "Get Balance completed. Balance - {0}.", sum);
+                return sum;
+            }
+            catch (Exception ex) when (ex is InvalidOperationException || ex is DbUpdateConcurrencyException || ex is DbUpdateException || ex is DbEntityValidationException || ex is SqlException)
+            {
+                this.m_logger.Log(LogLevel.Error, ex, "Get Balance returned error.");
+                throw new FaultException<AtmServiceFault>(new AtmServiceFault
+                {
+                    Result = false,
+                    Message = ex.Message,
+                    Description = ex.HelpLink
+                });
+            }
+        }
     }
 }

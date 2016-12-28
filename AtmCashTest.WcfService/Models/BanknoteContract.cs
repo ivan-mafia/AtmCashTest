@@ -1,7 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BanknoteContract.cs" company="Ivan">
+//   Starikov Ivan, 2016
+// </copyright>
+// <summary>
+//   Defines the BanknoteContract type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace AtmCashTest.WcfService.Models
 {
@@ -11,17 +15,29 @@ namespace AtmCashTest.WcfService.Models
 
     using AtmCashTest.Core;
 
+    /// <summary>
+    /// The banknote contract.
+    /// </summary>
     [DataContract]
     public class BanknoteContract : IBanknote
     {
+        /// <summary>
+        /// Gets or sets the id.
+        /// </summary>
         [DataMember]
         public int Id { get; set; }
 
+        /// <summary>
+        /// Gets or sets the nominal.
+        /// </summary>
         [DataMember]
         [Index("IX_Banknote_Nominal", 1, IsUnique = true)]
         [Range(0, int.MaxValue, ErrorMessage = "Nominal must be positive")]
         public int Nominal { get; set; }
 
+        /// <summary>
+        /// Gets or sets the count.
+        /// </summary>
         [DataMember]
         [Range(0, int.MaxValue, ErrorMessage = "Count must be positive")]
         public int Count { get; set; }

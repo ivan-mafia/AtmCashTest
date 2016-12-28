@@ -1,16 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HomeController.cs" company="Ivan">
+//   Starikov Ivan, 2016
+// </copyright>
+// <summary>
+//   Defines the HomeController type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace AtmCashTest.WebApi.Controllers
 {
-    [Authorize]
+    using System.Web.Mvc;
+
+    /// <summary>
+    /// The home controller.
+    /// </summary>
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        /// <summary>
+        /// The banknote. <c>GET: /Home/</c>.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ActionResult"/>.
+        /// </returns>
+        public ActionResult Banknote()
         {
-            return View();
+            return this.View();
         }
     }
 }

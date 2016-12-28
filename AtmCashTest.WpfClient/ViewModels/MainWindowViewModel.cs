@@ -1,13 +1,19 @@
-﻿namespace AtmCashTest.WpfClient.ViewModels
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MainWindowViewModel.cs" company="Ivan">
+//   Starikov Ivan, 2016
+// </copyright>
+// <summary>
+//   Defines the BanknoteCatel type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace AtmCashTest.WpfClient.ViewModels
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel.DataAnnotations;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.ServiceModel;
-
-    using Catel.MVVM;
     using System.Threading.Tasks;
     using System.Windows;
 
@@ -16,10 +22,42 @@
 
     using Catel;
     using Catel.Data;
+    using Catel.MVVM;
     using Catel.Services;
 
+    using NLog;
+
+    /// <summary>
+    /// View model for main window.
+    /// </summary>
     public class MainWindowViewModel : ViewModelBase
     {
+        /// <summary>
+        /// Register the IsCommandsEnabled property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData IsCommandsEnabledProperty = RegisterProperty("IsCommandsEnabled", typeof(bool));
+
+        /// <summary>
+        /// Register the BalanceSum property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData BalanceSumProperty = RegisterProperty("BalanceSum", typeof(int));
+
+        /// <summary>
+        /// Register the CashOutSum property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData CashOutSumProperty = RegisterProperty("CashOutSum", typeof(int));
+
+        /// <summary>
+        /// Register the CashInBanknotes property so it is known in the class.
+        /// </summary>
+        public static readonly PropertyData CashInBanknotesProperty = RegisterProperty("CashInBanknotes", typeof(ObservableCollection<BanknoteCatel>));
+
+        /// <summary>
+        /// The Logger.
+        /// </summary>
+        [SuppressMessage("StyleCopPlus.StyleCopPlusRules", "SP0100:AdvancedNamingRules", Justification = "Reviewed. Suppression is OK here.")]
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// The message service.
         /// </summary>
@@ -35,6 +73,11 @@
         /// </summary>
         private readonly string m_title = (string)Application.Current.FindResource("MainTitle");
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
+        /// </summary>
+        /// <param name="messageService">The message service.</param>
+        /// <param name="pleaseWaitService">The please wait service.</param>
         public MainWindowViewModel(IMessageService messageService, IPleaseWaitService pleaseWaitService)
         {
             Argument.IsNotNull(() => messageService);
@@ -42,93 +85,80 @@
 
             this.m_messageService = messageService;
             this.m_pleaseWaitService = pleaseWaitService;
-            this.AccountInfo = new Command(OnAccountInfoExecute);
+            this.GetBalance = new Command(this.OnGetBalanceExecute);
             this.CashIn = new Command(this.OnCashInExecute);
             CashOut = new Command(OnCashOutExecute);
             this.IsCommandsEnabled = true;
             this.CashInBanknotes = new ObservableCollection<BanknoteCatel>
                                        {
-                                           new BanknoteCatel {Id = 1, Nominal = 100, Count = 0},
-                                           new BanknoteCatel {Id = 2, Nominal = 500, Count = 0},
-                                           new BanknoteCatel {Id = 3, Nominal = 1000, Count = 0},
-                                           new BanknoteCatel {Id = 4, Nominal = 5000, Count = 0},
+                                           new BanknoteCatel { Id = 1, Nominal = 100, Count = 0 },
+                                           new BanknoteCatel { Id = 2, Nominal = 500, Count = 0 },
+                                           new BanknoteCatel { Id = 3, Nominal = 1000, Count = 0 },
+                                           new BanknoteCatel { Id = 4, Nominal = 5000, Count = 0 },
                                        };
-            OnAccountInfoExecute();
+            this.OnGetBalanceExecute();
         }
 
         /// <summary>
-            /// Gets or sets the property value.
-            /// </summary>
+        /// Gets or sets a value indicating whether is commands enabled.
+        /// </summary>
         public bool IsCommandsEnabled
         {
-            get { return GetValue<bool>(IsCommandsEnabledProperty); }
-            set { SetValue(IsCommandsEnabledProperty, value); }
+            get { return this.GetValue<bool>(IsCommandsEnabledProperty); }
+            set { this.SetValue(IsCommandsEnabledProperty, value); }
         }
 
         /// <summary>
-        /// Register the IsCommandsEnabled property so it is known in the class.
+        /// Gets or sets the property value.
         /// </summary>
-        public static readonly PropertyData IsCommandsEnabledProperty = RegisterProperty("IsCommandsEnabled", typeof(bool), null);
-
-        /// <summary>
-            /// Gets or sets the property value.
-            /// </summary>
         public int BalanceSum
         {
-            get { return GetValue<int>(BalanceSumProperty); }
-            set { SetValue(BalanceSumProperty, value); }
+            get { return this.GetValue<int>(BalanceSumProperty); }
+            set { this.SetValue(BalanceSumProperty, value); }
         }
-
-        /// <summary>
-        /// Register the BalanceSum property so it is known in the class.
-        /// </summary>
-        public static readonly PropertyData BalanceSumProperty = RegisterProperty("BalanceSum", typeof(int), null);
 
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
         public int CashOutSum
         {
-            get { return GetValue<int>(CashOutSumProperty); }
-            set { SetValue(CashOutSumProperty, value); }
+            get { return this.GetValue<int>(CashOutSumProperty); }
+            set { this.SetValue(CashOutSumProperty, value); }
         }
-
-        /// <summary>
-        /// Register the CashOutSum property so it is known in the class.
-        /// </summary>
-        public static readonly PropertyData CashOutSumProperty = RegisterProperty("CashOutSum", typeof(int), null);
 
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
         public ObservableCollection<BanknoteCatel> CashInBanknotes
         {
-            get { return GetValue<ObservableCollection<BanknoteCatel>>(CashInBanknotesProperty); }
-            set { SetValue(CashInBanknotesProperty, value); }
+            get { return this.GetValue<ObservableCollection<BanknoteCatel>>(CashInBanknotesProperty); }
+            set { this.SetValue(CashInBanknotesProperty, value); }
         }
 
         /// <summary>
-        /// Register the CashInBanknotes property so it is known in the class.
+        /// Gets the GetBalance command.
         /// </summary>
-        public static readonly PropertyData CashInBanknotesProperty = RegisterProperty("CashInBanknotes", typeof(ObservableCollection<BanknoteCatel>), null);
+        public Command GetBalance { get; private set; }
 
         /// <summary>
-            /// Gets the AccountInfo command.
-            /// </summary>
-        public Command AccountInfo { get; private set; }
-
-        /// <summary>
-        /// Method to invoke when the AccountInfo command is executed.
+        /// Method to invoke when the GetBalance command is executed.
         /// </summary>
-        private async void OnAccountInfoExecute()
+        private async void OnGetBalanceExecute()
         {
             this.IsCommandsEnabled = false;
+            logger.Log(LogLevel.Info, "Get Balance started.");
             try
             {
                 using (AtmCashServiceClient proxy = new AtmCashServiceClient())
                 {
-                    this.BalanceSum = await proxy.GetAccountSumAsync();
+                    this.BalanceSum = await proxy.GetBalanceAsync();
+                    logger.Log(LogLevel.Info, "Get Balance completed. Balance - {0}.", this.BalanceSum);
                 }
+            }
+            catch (FaultException<AtmServiceFault> ex)
+            {
+                logger.Log(LogLevel.Error, ex, "Get Balance returned error.");
+                await this.m_messageService.ShowAsync(ex.Message);
             }
             finally
             {
@@ -137,8 +167,8 @@
         }
 
         /// <summary>
-            /// Gets the CashIn command.
-            /// </summary>
+        /// Gets the CashIn command.
+        /// </summary>
         public Command CashIn { get; private set; }
 
         /// <summary>
@@ -147,6 +177,7 @@
         private async void OnCashInExecute()
         {
             this.IsCommandsEnabled = false;
+            logger.Log(LogLevel.Info, "Cash In started.");
             try
             {
                 var banknotes = (from banknote in this.CashInBanknotes
@@ -155,7 +186,7 @@
                 using (AtmCashServiceClient proxy = new AtmCashServiceClient())
                 {
                     var notAcceptedBanknotes = await proxy.PutCashAsync(banknotes.ToArray());
-                    this.BalanceSum = await proxy.GetAccountSumAsync();
+                    this.BalanceSum = await proxy.GetBalanceAsync();
                     if (notAcceptedBanknotes != null && notAcceptedBanknotes.Length > 0)
                     {
                         await m_messageService.ShowAsync("Not accepted");
@@ -174,7 +205,14 @@
                             banknote.Count = 0;
                         }
                     }
+
+                    logger.Log(LogLevel.Info, "Cash In completed.");
                 }
+            }
+            catch (FaultException<AtmServiceFault> ex)
+            {
+                logger.Log(LogLevel.Error, ex, "Cash In returned error.");
+                await this.m_messageService.ShowAsync(ex.Message);
             }
             finally
             {
@@ -184,8 +222,8 @@
         }
 
         /// <summary>
-            /// Gets the CashOut command.
-            /// </summary>
+        /// Gets the CashOut command.
+        /// </summary>
         public Command CashOut { get; private set; }
 
         /// <summary>
@@ -193,6 +231,7 @@
         /// </summary>
         private async void OnCashOutExecute()
         {
+            logger.Log(LogLevel.Info, "Cash Out started. Requested Sum - {0}", this.CashOutSum);
             List<BanknoteContract> banknotes = new List<BanknoteContract>();
             IsCommandsEnabled = false;
             this.m_pleaseWaitService.Show();
@@ -202,13 +241,15 @@
                 {
                     var cashOutBanknotes = await proxy.GetCashAsync(this.CashOutSum);
                     banknotes.AddRange(cashOutBanknotes);
-                    this.BalanceSum = await proxy.GetAccountSumAsync();
+                    this.BalanceSum = await proxy.GetBalanceAsync();
                 }
                 string message = banknotes.Where(banknote => banknote.Count > 0).Aggregate("Cashed out: ", (current, banknote) => current + string.Format("{1} of \"{0}\" banknotes, ", banknote.Nominal, banknote.Count));
-                await this.m_messageService.ShowAsync(message.Substring(0, message.Length-2));
+                await this.m_messageService.ShowAsync(message.Substring(0, message.Length - 2));
+                logger.Log(LogLevel.Info, "Cash Out completed.");
             }
-            catch (FaultException<ImpossibleCashOutFault> ex)
+            catch (FaultException<AtmServiceFault> ex)
             {
+                logger.Log(LogLevel.Error, "Get Cash couldn't cashout this sum({0}).", this.CashOutSum);
                 await this.m_messageService.ShowAsync(ex.Message);
             }
             finally
@@ -228,14 +269,10 @@
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
-
-            // TODO: subscribe to events here
         }
 
         protected override async Task CloseAsync()
         {
-            // TODO: unsubscribe from events here
-
             await base.CloseAsync();
         }
     }

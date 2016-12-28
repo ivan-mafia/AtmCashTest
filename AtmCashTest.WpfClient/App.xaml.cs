@@ -1,21 +1,39 @@
-﻿namespace AtmCashTest.WpfClient
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="App.xaml.cs" company="Ivan">
+//   Starikov Ivan, 2016
+// </copyright>
+// <summary>
+//   Interaction logic for App.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace AtmCashTest.WpfClient
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Windows;
 
     using Catel.ApiCop;
     using Catel.ApiCop.Listeners;
-    using Catel.IoC;
     using Catel.Logging;
-    using Catel.Reflection;
-    using Catel.Windows;
 
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Interaction logic for <c>App.xaml</c>.
     /// </summary>
+    // ReSharper disable once RedundantExtendsListEntry
     public partial class App : Application
     {
+        /// <summary>
+        /// The log.
+        /// </summary>
+        [SuppressMessage("StyleCopPlus.StyleCopPlusRules", "SP0100:AdvancedNamingRules", Justification = "Reviewed. Suppression is OK here.")]
         private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// The on startup.
+        /// </summary>
+        /// <param name="e">
+        /// The startup event args.
+        /// </param>
         protected override void OnStartup(StartupEventArgs e)
         {
 #if DEBUG
@@ -23,36 +41,17 @@
 #endif
 
             Log.Info("Starting application");
-
-            // To force the loading of all assemblies at startup, uncomment the lines below:
-
-            //Log.Info("Preloading assemblies");
-            //AppDomain.CurrentDomain.PreloadAssemblies();
-
-
-            // Want to improve performance? Uncomment the lines below. Note though that this will disable
-            // some features. 
-            //
-            // For more information, see https://catelproject.atlassian.net/wiki/display/CTL/Performance+considerations
-
-            // Log.Info("Improving performance");
-            // Catel.Data.ModelBase.DefaultSuspendValidationValue = true;
-            // Catel.Windows.Controls.UserControl.DefaultCreateWarningAndErrorValidatorForViewModelValue = false;
-            // Catel.Windows.Controls.UserControl.DefaultSkipSearchingForInfoBarMessageControlValue = true;
-
-
-            // TODO: Register custom types in the ServiceLocator
-            //Log.Info("Registering custom types");
-            //var serviceLocator = ServiceLocator.Default;
-            //serviceLocator.RegisterType<IMyInterface, IMyClass>();
-
-            //StyleHelper.CreateStyleForwardersForDefaultStyles();
-
             Log.Info("Calling base.OnStartup");
 
             base.OnStartup(e);
         }
 
+        /// <summary>
+        /// The on exit.
+        /// </summary>
+        /// <param name="e">
+        /// The exit events args.
+        /// </param>
         protected override void OnExit(ExitEventArgs e)
         {
             // Get advisory report in console

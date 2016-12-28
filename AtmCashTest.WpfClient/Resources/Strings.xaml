@@ -3,7 +3,6 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--Labels-->
     <system:String x:Key="MainTitle">ATM</system:String>
-    <system:String x:Key="LastNameFilter">test</system:String>
     <system:String x:Key="Balance">Balance:</system:String>
     <system:String x:Key="Update">Update</system:String>
     <system:String x:Key="DepositCash">Deposit cash:</system:String>

@@ -1,18 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AtmOperations.cs" company="Ivan">
+//   Starikov Ivan, 2016
+// </copyright>
+// <summary>
+//   Defines the AtmOperations type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace AtmCashTest.Core
 {
-    public class AtmOperations
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    /// <summary>
+    /// The <c>Atm</c> operations.
+    /// </summary>
+    public class AtmOperations : IAtmOperations
     {
+        /// <summary>
+        /// The get cash.
+        /// </summary>
+        /// <param name="atmBanknotes">
+        /// The <c>atm</c> banknotes.
+        /// </param>
+        /// <param name="amount">
+        /// The amount that needed to cash out.
+        /// </param>
+        /// <returns>
+        /// The list of banknotes.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Throws exception when impossible to cash out selected sum.
+        /// </exception>
         public IEnumerable<IBanknote> GetCash(IEnumerable<IBanknote> atmBanknotes, int amount)
         {
             IList<IBanknote> cashOut = new List<IBanknote>();
-
-            List<IBanknote> atmB = new List<IBanknote>(atmBanknotes);
-
+            var banknotes = atmBanknotes as IList<IBanknote> ?? atmBanknotes.ToList();
+            List<IBanknote> atmB = new List<IBanknote>(banknotes);
 
             while (true)
             {
@@ -20,7 +45,7 @@ namespace AtmCashTest.Core
 
                 IBanknote currentMax;
 
-                //Get biggest unused nominal
+                // Get biggest unused nominal
                 if (atmB.Count > cashOut.Count)
                 {
                     currentMax = atmB.Where(x => cashOut.All(p => p.Nominal != x.Nominal)).Aggregate((agg, next) => next.Nominal > agg.Nominal ? next : agg);
@@ -30,18 +55,18 @@ namespace AtmCashTest.Core
                     throw new InvalidOperationException("Couldn't cashout this sum");
                 }
 
-                //Needed amount of banknotes of this nominal
+                // Needed amount of banknotes of this nominal
                 int neededCount = amount / currentMax.Nominal;
 
-                //If needed banknotes count is more then atm has, then get all this banknotes from atm.
+                // If needed banknotes count is more then atm has, then get all this banknotes from atm.
                 if (neededCount > currentMax.Count)
                 {
-                    change = amount - currentMax.Nominal * currentMax.Count;
+                    change = amount - (currentMax.Nominal * currentMax.Count);
                     neededCount = currentMax.Count;
                 }
                 else
                 {
-                    change = amount - currentMax.Nominal * neededCount;
+                    change = amount - (currentMax.Nominal * neededCount);
                 }
 
                 // All sum is out.
@@ -52,12 +77,12 @@ namespace AtmCashTest.Core
                 }
 
                 // Left sum if less then minimum banknote nominal
-                if (change < atmBanknotes.Aggregate((agg, next) => next.Nominal < agg.Nominal ? next : agg).Nominal)
+                if (change < banknotes.Aggregate((agg, next) => next.Nominal < agg.Nominal ? next : agg).Nominal)
                 {
-                    // needed count decrease by 1, to try to find sum with more tiny banknotes
+                    // Needed count decrease by 1, to try to find sum with more tiny banknotes
                     neededCount -= 1;
                     cashOut.Add(new Banknote { Id = currentMax.Id, Nominal = currentMax.Nominal, Count = neededCount });
-                    amount = amount - currentMax.Nominal * neededCount;
+                    amount = amount - (currentMax.Nominal * neededCount);
                     continue;
                 }
 
