@@ -21,6 +21,7 @@ namespace AtmCashTest.WcfService.Models
     [DataContract]
     public class BanknoteContract : IBanknote
     {
+        #region Public Properties
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -41,5 +42,6 @@ namespace AtmCashTest.WcfService.Models
         [DataMember]
         [Range(0, int.MaxValue, ErrorMessage = "Count must be positive")]
         public int Count { get; set; }
+        #endregion
     }
 }

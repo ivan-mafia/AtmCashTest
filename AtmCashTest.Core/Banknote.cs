@@ -14,6 +14,7 @@ namespace AtmCashTest.Core
     /// </summary>
     public class Banknote : IBanknote
     {
+        #region Public Properties
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -28,5 +29,6 @@ namespace AtmCashTest.Core
         /// Gets or sets the count.
         /// </summary>
         public int Count { get; set; }
+        #endregion
     }
 }

@@ -17,6 +17,7 @@ namespace AtmCashTest.Data.DbContext
     /// </summary>
     public class AtmDbInitializer : DropCreateDatabaseIfModelChanges<AtmDbContext>
     {
+        #region Private, Protected Methods
         /// <summary>
         /// The seed. Need to initialize data.
         /// </summary>
@@ -34,6 +35,7 @@ namespace AtmCashTest.Data.DbContext
                                                   };
             context.Banknotes.AddRange(defaulBanknotes);
             base.Seed(context);
-        }
+        } 
+        #endregion
     }
 }

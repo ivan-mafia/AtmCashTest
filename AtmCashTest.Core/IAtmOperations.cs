@@ -16,6 +16,7 @@ namespace AtmCashTest.Core
     /// </summary>
     public interface IAtmOperations
     {
+        #region Public Methods
         /// <summary>
         /// The get cash.
         /// </summary>
@@ -29,5 +30,6 @@ namespace AtmCashTest.Core
         /// The The list of banknotes.
         /// </returns>
         IEnumerable<IBanknote> GetCash(IEnumerable<IBanknote> atmBanknotes, int amount);
+        #endregion
     }
 }

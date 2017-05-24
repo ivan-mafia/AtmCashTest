@@ -19,6 +19,7 @@ namespace AtmCashTest.Data.DbContext
     /// </summary>
     public interface IRepositoryService
     {
+        #region Public Methods
         /// <summary>
         /// The get all banknotes types.
         /// </summary>
@@ -78,5 +79,6 @@ namespace AtmCashTest.Data.DbContext
         /// The <see cref="Task"/>. True if operation completed successfully.
         /// </returns>
         Task<bool> CashOutBanknotesAsync(IEnumerable<IBanknote> banknotes);
+        #endregion
     }
 }

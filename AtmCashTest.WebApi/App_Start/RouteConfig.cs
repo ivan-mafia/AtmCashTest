@@ -17,6 +17,7 @@ namespace AtmCashTest.WebApi
     /// </summary>
     public class RouteConfig
     {
+        #region Public Methods
         /// <summary>
         /// The register routes.
         /// </summary>
@@ -32,5 +33,6 @@ namespace AtmCashTest.WebApi
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Banknote", id = UrlParameter.Optional });
         }
+        #endregion
     }
 }

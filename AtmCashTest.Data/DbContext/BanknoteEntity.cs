@@ -20,6 +20,7 @@ namespace AtmCashTest.Data.DbContext
     [Table("banknote")]
     public class BanknoteEntity : IBanknote
     {
+        #region Public Properties
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -37,5 +38,6 @@ namespace AtmCashTest.Data.DbContext
         /// </summary>
         [Range(0, int.MaxValue, ErrorMessage = "Count must be positive")]
         public int Count { get; set; }
+        #endregion
     }
 }

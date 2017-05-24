@@ -21,6 +21,7 @@ namespace AtmCashTest.WpfClient.Models
     /// </summary>
     public class BanknoteCatel : ModelBase, IBanknote
     {
+        #region Public Fields
         /// <summary>
         /// Register the Id property so it is known in the class.
         /// </summary>
@@ -35,7 +36,9 @@ namespace AtmCashTest.WpfClient.Models
         /// Register the Count property so it is known in the class.
         /// </summary>
         public static readonly PropertyData CountProperty = RegisterProperty("Count", typeof(int));
+        #endregion
 
+        #region Public Properties
         /// <summary>
         /// Gets or sets the property value.
         /// </summary>
@@ -64,6 +67,7 @@ namespace AtmCashTest.WpfClient.Models
             get { return this.GetValue<int>(CountProperty); }
             set { this.SetValue(CountProperty, value); }
         }
+        #endregion
 
         #region Protected Methods
         /// <summary>

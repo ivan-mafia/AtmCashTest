@@ -9,6 +9,7 @@
 
 namespace AtmCashTest.WebApi.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace AtmCashTest.WebApi.Controllers
     /// </summary>
     public class BanknoteController : ApiController
     {
+        #region Public Methods
         /// <summary>
         /// The repository service.
         /// </summary>
@@ -85,6 +87,11 @@ namespace AtmCashTest.WebApi.Controllers
         public async Task<IEnumerable<IBanknote>> GetCash(int sum)
         {
             this.m_logger.Log(LogLevel.Info, "Get Cash started.");
+            if (sum <= 0)
+            {
+                throw new InvalidOperationException("Couldn't cashout this sum");
+            }
+
             var atmBanknotes = await this.m_repositoryService.GetAllBanknotesAsync();
             var cashOutBanknotes = this.m_atmOperations.GetCash(atmBanknotes, sum).Where(banknote => banknote.Count > 0).ToList();
             var isCashedOut = await this.m_repositoryService.CashOutBanknotesAsync(cashOutBanknotes);
@@ -112,5 +119,6 @@ namespace AtmCashTest.WebApi.Controllers
             this.m_logger.Log(LogLevel.Info, "Get Balance completed. Balance - {0}.", sum);
             return sum;
         }
+        #endregion
     }
 }

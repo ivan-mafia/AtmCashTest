@@ -31,6 +31,7 @@ namespace AtmCashTest.WpfClient.ViewModels
     /// </summary>
     public class MainWindowViewModel : ViewModelBase
     {
+        #region Public Fields
         /// <summary>
         /// Register the IsCommandsEnabled property so it is known in the class.
         /// </summary>
@@ -50,7 +51,9 @@ namespace AtmCashTest.WpfClient.ViewModels
         /// Register the CashInBanknotes property so it is known in the class.
         /// </summary>
         public static readonly PropertyData CashInBanknotesProperty = RegisterProperty("CashInBanknotes", typeof(ObservableCollection<BanknoteCatel>));
+        #endregion
 
+        #region Private Fields
         /// <summary>
         /// The Logger.
         /// </summary>
@@ -71,7 +74,9 @@ namespace AtmCashTest.WpfClient.ViewModels
         /// The m_title.
         /// </summary>
         private readonly string m_title = (string)Application.Current.FindResource("MainTitle");
+        #endregion
 
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
         /// </summary>
@@ -95,9 +100,12 @@ namespace AtmCashTest.WpfClient.ViewModels
                                            new BanknoteCatel { Id = 3, Nominal = 1000, Count = 0 },
                                            new BanknoteCatel { Id = 4, Nominal = 5000, Count = 0 },
                                        };
+            this.CashOutSum = 100;
             this.OnGetBalanceExecute();
         }
+        #endregion
 
+        #region Public Properties
         /// <summary>
         /// Gets the title of the view model.
         /// </summary>
@@ -154,7 +162,9 @@ namespace AtmCashTest.WpfClient.ViewModels
         /// Gets the CashOut command.
         /// </summary>
         public Command CashOut { get; private set; }
+        #endregion
 
+        #region Private Methods
         /// <summary>
         /// Method to invoke when the GetBalance command is executed.
         /// </summary>
@@ -173,7 +183,7 @@ namespace AtmCashTest.WpfClient.ViewModels
             catch (FaultException<AtmServiceFault> ex)
             {
                 logger.Log(LogLevel.Error, ex, "Get Balance returned error.");
-                await this.m_messageService.ShowAsync(ex.Message);
+                await this.m_messageService.ShowAsync(ex.Detail.Message);
             }
             finally
             {
@@ -222,7 +232,7 @@ namespace AtmCashTest.WpfClient.ViewModels
             catch (FaultException<AtmServiceFault> ex)
             {
                 logger.Log(LogLevel.Error, ex, "Cash In returned error.");
-                await this.m_messageService.ShowAsync(ex.Message);
+                await this.m_messageService.ShowAsync(ex.Detail.Message);
             }
             finally
             {
@@ -259,7 +269,7 @@ namespace AtmCashTest.WpfClient.ViewModels
             catch (FaultException<AtmServiceFault> ex)
             {
                 logger.Log(LogLevel.Error, "Get Cash couldn't cashout this sum({0}).", this.CashOutSum);
-                await this.m_messageService.ShowAsync(ex.Message);
+                await this.m_messageService.ShowAsync(ex.Detail.Message);
             }
             finally
             {
@@ -267,5 +277,6 @@ namespace AtmCashTest.WpfClient.ViewModels
                 this.m_pleaseWaitService.Hide();
             }
         }
+        #endregion
     }
 }

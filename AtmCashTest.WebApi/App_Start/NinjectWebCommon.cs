@@ -32,12 +32,15 @@ namespace AtmCashTest.WebApi.App_Start
     /// </summary>
     public static class NinjectWebCommon
     {
+        #region Private Fields
         /// <summary>
         /// The <c>bootstrapper</c>.
         /// </summary>
         [SuppressMessage("StyleCopPlus.StyleCopPlusRules", "SP0100:AdvancedNamingRules", Justification = "Reviewed. Suppression is OK here.")]
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
+        #endregion
 
+        #region Public Methods
         /// <summary>
         /// Starts the application
         /// </summary>
@@ -55,7 +58,9 @@ namespace AtmCashTest.WebApi.App_Start
         {
             bootstrapper.ShutDown();
         }
+        #endregion
 
+        #region Private Methods
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -90,5 +95,6 @@ namespace AtmCashTest.WebApi.App_Start
         private static void RegisterServices(IKernel kernel)
         {
         }
+        #endregion
     }
 }

@@ -46,8 +46,7 @@
         <Separator Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"/>
          
         <Label Grid.Row="4" Grid.Column="0" Content="{StaticResource CashWithdrawal}"></Label>
-        <metro:NumericUpDown Grid.Row="4" Grid.Column="1" Value="{Binding CashOutSum}" HasDecimals="False" Minimum="0" Interval="100"></metro:NumericUpDown>
-        <!--<TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CashOutSum}" FontWeight="Bold" Margin="0,0,20,0"></TextBox>-->
+        <metro:NumericUpDown Grid.Row="4" Grid.Column="1" Value="{Binding CashOutSum, FallbackValue=100}" HasDecimals="False" Minimum="0" Interval="100"></metro:NumericUpDown>
         <Button Grid.Row="4" Grid.Column="2" Command="{Binding CashOut}" IsEnabled="{Binding IsCommandsEnabled}" Content="{StaticResource CashOut}" Margin="8,0,0,0"></Button>
     </Grid>
     

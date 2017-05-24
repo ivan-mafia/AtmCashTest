@@ -16,6 +16,7 @@ namespace AtmCashTest.Data.DbContext
     /// </summary>
     public class AtmDbContext : DbContext
     {
+        #region Consturctors
         /// <summary>
         /// Initializes a new instance of the <see cref="AtmDbContext"/> class.
         /// </summary>
@@ -25,10 +26,13 @@ namespace AtmCashTest.Data.DbContext
             // ReSharper disable once RedundantTypeArgumentsOfMethod
             Database.SetInitializer<AtmDbContext>(new AtmDbInitializer());
         }
+        #endregion
 
+        #region Public Properties
         /// <summary>
         /// Gets or sets the banknotes.
         /// </summary>
         public DbSet<BanknoteEntity> Banknotes { get; set; }
+        #endregion
     }
 }

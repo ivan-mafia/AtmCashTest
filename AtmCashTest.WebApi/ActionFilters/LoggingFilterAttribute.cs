@@ -22,6 +22,7 @@ namespace AtmCashTest.WebApi.ActionFilters
     /// </summary>
     public class LoggingFilterAttribute : ActionFilterAttribute
     {
+        #region Public Method
         /// <summary>
         /// The on action executing.
         /// </summary>
@@ -37,5 +38,6 @@ namespace AtmCashTest.WebApi.ActionFilters
                            + Environment.NewLine + "Action : " + filterContext.ActionDescriptor.ActionName;
             trace.Info(filterContext.Request, category, "JSON", filterContext.ActionArguments);
         }
+        #endregion
     }
 }

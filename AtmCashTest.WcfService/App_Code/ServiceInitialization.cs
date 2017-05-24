@@ -14,6 +14,7 @@ namespace AtmCashTest.WcfService.App_Code
     /// </summary>
     public class ServiceInitialization
     {
+        #region Public Methods
         /// <summary>
         /// App initialize method.
         /// </summary>
@@ -22,5 +23,6 @@ namespace AtmCashTest.WcfService.App_Code
             // AutoMapper initialization.
             new AutoMapperConfig();
         }
+        #endregion
     }
 }

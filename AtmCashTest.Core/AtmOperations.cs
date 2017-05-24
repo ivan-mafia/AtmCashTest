@@ -18,6 +18,7 @@ namespace AtmCashTest.Core
     /// </summary>
     public class AtmOperations : IAtmOperations
     {
+        #region Public Methods
         /// <summary>
         /// The get cash.
         /// </summary>
@@ -48,7 +49,9 @@ namespace AtmCashTest.Core
                 // Get biggest unused nominal
                 if (atmB.Count > cashOut.Count)
                 {
-                    currentMax = atmB.Where(x => cashOut.All(p => p.Nominal != x.Nominal)).Aggregate((agg, next) => next.Nominal > agg.Nominal ? next : agg);
+                    currentMax =
+                        atmB.Where(x => cashOut.All(p => p.Nominal != x.Nominal))
+                            .Aggregate((agg, next) => next.Nominal > agg.Nominal ? next : agg);
                 }
                 else
                 {
@@ -92,5 +95,6 @@ namespace AtmCashTest.Core
                 amount = change;
             }
         }
+        #endregion
     }
 }

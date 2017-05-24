@@ -24,6 +24,7 @@ namespace AtmCashTest.WebApi.ActionFilters
     /// </summary>
     public class GlobalExceptionAttribute : ExceptionFilterAttribute
     {
+        #region Public Methods
         /// <summary>
         /// The on exception. This filter needed to log exception in <c>nlog</c>.
         /// </summary>
@@ -61,5 +62,6 @@ namespace AtmCashTest.WebApi.ActionFilters
                 throw new HttpResponseException(context.Request.CreateResponse(HttpStatusCode.InternalServerError));
             }
         }
+        #endregion
     }
 }

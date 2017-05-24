@@ -30,6 +30,7 @@ namespace AtmCashTest.WcfService
     /// </summary>
     public class AtmCashService : IAtmCashService
     {
+        #region Private Fields
         /// <summary>
         /// The repository service.
         /// </summary>
@@ -44,7 +45,9 @@ namespace AtmCashTest.WcfService
         /// The logger.
         /// </summary>
         private readonly ILogger m_logger;
+        #endregion
 
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="AtmCashService"/> class.
         /// </summary>
@@ -63,7 +66,9 @@ namespace AtmCashTest.WcfService
             this.m_atmOperations = atmOperations;
             this.m_logger = logger;
         }
+        #endregion
 
+        #region Public Methods
         /// <summary>
         /// The put cash.
         /// </summary>
@@ -114,6 +119,11 @@ namespace AtmCashTest.WcfService
             try
             {
                 this.m_logger.Log(LogLevel.Info, "Get Cash started. Requested Sum - {0}", sum);
+                if (sum <= 0)
+                {
+                    throw new InvalidOperationException("Couldn't cashout this sum");
+                }
+
                 var atmBanknotes = this.m_repositoryService.GetAllBanknotes();
                 var cashOutBanknotes = this.m_atmOperations.GetCash(atmBanknotes, sum).Where(b => b.Count > 0).ToList();
                 var isCashedOut = this.m_repositoryService.CashOutBanknotes(cashOutBanknotes);
@@ -174,5 +184,6 @@ namespace AtmCashTest.WcfService
                 });
             }
         }
+        #endregion
     }
 }

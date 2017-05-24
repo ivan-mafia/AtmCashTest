@@ -20,6 +20,7 @@ namespace AtmCashTest.WcfService
     [ServiceContract]
     public interface IAtmCashService
     {
+        #region Public Methods
         /// <summary>
         /// The put cash.
         /// </summary>
@@ -55,5 +56,6 @@ namespace AtmCashTest.WcfService
         [OperationContract]
         [FaultContract(typeof(AtmServiceFault))]
         int GetBalance();
+        #endregion
     }
 }

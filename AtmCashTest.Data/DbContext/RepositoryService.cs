@@ -21,6 +21,7 @@ namespace AtmCashTest.Data.DbContext
     /// </summary>
     public class RepositoryService : IRepositoryService
     {
+        #region Public Methods
         /// <summary>
         /// The get all banknotes types.
         /// </summary>
@@ -206,5 +207,6 @@ namespace AtmCashTest.Data.DbContext
 
             return true;
         }
+        #endregion
     }
 }

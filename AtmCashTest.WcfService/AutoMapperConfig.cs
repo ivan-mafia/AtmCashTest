@@ -19,6 +19,7 @@ namespace AtmCashTest.WcfService
     /// </summary>
     public class AutoMapperConfig
     {
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoMapperConfig"/> class.
         /// </summary>
@@ -26,5 +27,6 @@ namespace AtmCashTest.WcfService
         {
             Mapper.Initialize(cfg => cfg.CreateMap<IBanknote, BanknoteContract>());
         }
+        #endregion
     }
 }

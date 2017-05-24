@@ -17,6 +17,7 @@ namespace AtmCashTest.WcfService.Models
     [DataContract]
     public class AtmServiceFault
     {
+        #region Public Properties
         /// <summary>
         /// Gets or sets a value indicating whether result.
         /// </summary>
@@ -34,5 +35,6 @@ namespace AtmCashTest.WcfService.Models
         /// </summary>
         [DataMember]
         public string Description { get; set; }
+        #endregion
     }
 }

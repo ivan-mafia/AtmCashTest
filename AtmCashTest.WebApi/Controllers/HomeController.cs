@@ -16,6 +16,7 @@ namespace AtmCashTest.WebApi.Controllers
     /// </summary>
     public class HomeController : Controller
     {
+        #region Public Methods
         /// <summary>
         /// The banknote. <c>GET: /Home/</c>.
         /// </summary>
@@ -26,5 +27,6 @@ namespace AtmCashTest.WebApi.Controllers
         {
             return this.View();
         }
+        #endregion
     }
 }
